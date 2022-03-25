@@ -24,6 +24,33 @@ static ut64 letter_divs[RZ_CORE_ASMQJMPS_LEN_LETTERS - 1] = {
 
 extern bool rz_core_is_project(RzCore *core, const char *name);
 
+RZ_API const char *rz_core_notify_begin(RzCore *core, const char *str) {
+	bool use_color = rz_config_get_i(core->config, "scr.color") > 0;
+	bool verbose = rz_config_get_b(core->config, "scr.prompt");
+	if (!verbose) {
+		return NULL;
+	}
+	if (use_color) {
+		rz_cons_printf("[ ] " Color_YELLOW "%s\r[" Color_RESET, str);
+	} else {
+		rz_cons_printf("[ ] %s\r[", str);
+	}
+	return str;
+}
+
+RZ_API void rz_core_notify_done(RzCore *core, const char *str) {
+	bool use_color = rz_config_get_i(core->config, "scr.color") > 0;
+	bool verbose = rz_config_get_b(core->config, "scr.prompt");
+	if (!verbose) {
+		return;
+	}
+	if (use_color) {
+		rz_cons_printf("\r" Color_GREEN "[x]" Color_RESET " %s\n", str);
+		return;
+	}
+	rz_cons_printf("\r[x] %s\n", str);
+}
+
 static int on_fcn_new(RzAnalysis *_analysis, void *_user, RzAnalysisFunction *fcn) {
 	RzCore *core = (RzCore *)_user;
 	const char *cmd = rz_config_get(core->config, "cmd.fcn.new");

@@ -421,6 +421,9 @@ typedef int (*RzCoreSearchCallback)(RzCore *core, ut64 from, ut8 *buf, int len);
 #ifdef RZ_API
 RZ_API int rz_core_bind(RzCore *core, RzCoreBind *bnd);
 
+RZ_API const char *rz_core_notify_begin(RzCore *core, const char *str);
+RZ_API void rz_core_notify_done(RzCore *core, const char *str);
+
 /**
  * \brief APIs to handle Visual Gadgets
  */
